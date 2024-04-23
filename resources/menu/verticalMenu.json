@@ -1,0 +1,26 @@
+{
+  "menu": [
+    {
+      "url": "/",
+      "name": "Dashboards",
+      "icon": "menu-icon tf-icons bx bx-home-circle",
+      "slug": "dashboard",
+      "badge": [
+        "danger",
+        "5"
+      ]
+
+    },
+    {
+      "name": "Category",
+      "icon": "menu-icon tf-icons bx bx-collection",
+      "slug": "category-list",
+      "url": "categories/list"
+    }
+
+
+  ]
+
+
+
+}
