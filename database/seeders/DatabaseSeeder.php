@@ -17,6 +17,7 @@ class DatabaseSeeder extends Seeder
             CreateAdminUserSeeder::class,
             CategoryTranslationSeeder::class,
             CategorySeeder::class,
+            // 
 
     ]);
     }
