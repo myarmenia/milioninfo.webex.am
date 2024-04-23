@@ -14,5 +14,7 @@ class VerifyCsrfToken extends Middleware
     protected $except = [
       'http://127.0.0.1:8000/*',
       'http://localhost:8000/*',
+      'http://http://milioninfo.webex.am/*',
+      'https://http://milioninfo.webex.am/*'
   ];
 }
