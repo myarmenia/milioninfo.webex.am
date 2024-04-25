@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\API\GetCordinateController;
 use App\Http\Controllers\GetCategoryController;
 use App\Http\Controllers\GetCategorySubcategoriesController;
 use App\Http\Controllers\SearchController;
@@ -24,8 +25,9 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 Route::group(['middleware' => ['setlang']], function ($router) {
 
   Route::get('get-categories', GetCategoryController::class);
- 
+
   Route::get('search',SearchController::class);
+  Route::get('coordinates',GetCordinateController::class);
 
 
 });

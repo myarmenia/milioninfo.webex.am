@@ -17,10 +17,13 @@ class SearchController extends BaseController
     public function __invoke(Request $request)
     {
       $searched_word = $request->query('searched_word');
-      $data = Organization::search($searched_word);
-      // $data = Subcategory::search($searched_word);
+      $latitude = $request->query('latitude');
+      $longitude = $request->query('longitude');
 
- 
+      $data = Organization::search($searched_word,$latitude, $longitude);
+      $data = Subcategory::search($searched_word);
+
+
       return $this->sendResponse(OrganizationResource::collection($data->with('subcategories')->get()),'success');
       // return SubcategoryResource::collection($data->with('organizations')->get());
 

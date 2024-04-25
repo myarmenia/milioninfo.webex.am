@@ -1,5 +1,6 @@
 <?php
 namespace App\Traits\Category;
+use GeoKit\Math;
 
 use App\Models\Category;
 
