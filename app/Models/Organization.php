@@ -51,7 +51,7 @@ class Organization extends Model
           $builder->orWhere($searchable,'like','%'.$searched_word.'%');
       }
       // dd($builder->get());
-      dd($builder->toSql());
+      // dd($builder->toSql());
       return $builder;
 
 
