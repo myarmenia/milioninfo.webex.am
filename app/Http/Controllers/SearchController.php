@@ -21,7 +21,7 @@ class SearchController extends BaseController
       $longitude = $request->query('longitude');
 
       $data = Organization::search($searched_word,$latitude, $longitude);
-      $data = Subcategory::search($searched_word);
+      // $data = Subcategory::search($searched_word);
 
 
       return $this->sendResponse(OrganizationResource::collection($data->with('subcategories')->get()),'success');
