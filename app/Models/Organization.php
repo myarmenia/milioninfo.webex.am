@@ -6,6 +6,7 @@ use App\Traits\CoordinateTrait;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Str;
 
 class Organization extends Model
@@ -17,6 +18,7 @@ class Organization extends Model
       'name_ru',
       'branches.latitude',
       'branches.longitude',
+      'branches.address_am',
   ];
   public function subcategories() {
       return $this->belongsTo(Subcategory::class,'subcategory_id');
@@ -27,7 +29,7 @@ class Organization extends Model
   public function branches() {
       return $this->hasMany(Branch::class);
   }
-  public function scopeSearch(Builder $builder,$searched_word='', $latitude='', $longitude=''){
+  public function scopeSearch(Builder $builder,$searched_word='', $latitude='', $longitude='',$address=''){
 
 
       foreach($this->searchable as $searchable){
@@ -36,13 +38,16 @@ class Organization extends Model
               $relation = Str::beforeLast($searchable, '.');
               $column = Str::afterLast($searchable, '.');
 
-              $builder->orWhereRelation($relation, $column, 'like', '%'.$searched_word.'%');
+              // $builder->orWhereRelation($relation, $column, 'like', '%'.$searched_word.'%');
 
               if($latitude!=null && $longitude!=null){
 
                 $coordinate=$this->countCordinate($latitude,$longitude);
                 $builder->whereRelation($relation, 'latitude', '<=', $coordinate['latitude']);
                 $builder->whereRelation($relation, 'longitude', '<=', $coordinate['longitude']);
+              }
+              if($address!=null){
+                $builder->whereRelation($relation,  $column, 'like', '%'.$searched_word.'%');
               }
 
               continue;
