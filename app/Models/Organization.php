@@ -29,7 +29,7 @@ class Organization extends Model
   public function branches() {
       return $this->hasMany(Branch::class);
   }
-  public function scopeSearch(Builder $builder,$searched_word='', $latitude='', $longitude='',$address=''){
+  public function scopeSearch(Builder $builder,$searched_word='', $latitude='', $longitude=''){
 
 
       foreach($this->searchable as $searchable){
@@ -38,7 +38,7 @@ class Organization extends Model
               $relation = Str::beforeLast($searchable, '.');
               $column = Str::afterLast($searchable, '.');
 
-              // $builder->orWhereRelation($relation, $column, 'like', '%'.$searched_word.'%');
+              $builder->orWhereRelation($relation, $column, 'like', '%'.$searched_word.'%');
 
               if($latitude!=null && $longitude!=null){
 
@@ -46,9 +46,9 @@ class Organization extends Model
                 $builder->whereRelation($relation, 'latitude', '<=', $coordinate['latitude']);
                 $builder->whereRelation($relation, 'longitude', '<=', $coordinate['longitude']);
               }
-              if($address!=null){
-                $builder->whereRelation($relation,  $column, 'like', '%'.$searched_word.'%');
-              }
+              // if($address!=null){
+              //   $builder->whereRelation($relation,  $column, 'like', '%'.$searched_word.'%');
+              // }
 
               continue;
           }

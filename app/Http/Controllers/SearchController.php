@@ -19,8 +19,8 @@ class SearchController extends BaseController
       $searched_word = $request->query('searched_word');
       $latitude = $request->query('latitude');
       $longitude = $request->query('longitude');
-      $address = $request->query('address');
-      $data = Organization::search($searched_word,$latitude, $longitude,$address);
+      // $address = $request->query('address');
+      $data = Organization::search($searched_word,$latitude, $longitude);
       // $data = Subcategory::search($searched_word);
 
 
