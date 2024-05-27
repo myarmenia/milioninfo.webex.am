@@ -18,6 +18,7 @@ class CategoryResource extends JsonResource
       return [
         'id'=>$this->id,
         'name'=>$this->translation(app()->getLocale())->name,
+        'path'=>isset($this->path)?route('get-file',['path'=>$this->path]):null,
         'subcategories'=>SubcategoriesResource::collection($this->subcategories)
        ];
     }
