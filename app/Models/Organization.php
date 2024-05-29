@@ -11,14 +11,15 @@ use Illuminate\Support\Str;
 
 class Organization extends Model
 {
-    use HasFactory , CoordinateTrait;
+    use HasFactory , CoordinateTrait ;
     protected  $searchable = [
-      'name_en',
       'name_am',
+      'name_en',
       'name_ru',
       'branches.latitude',
       'branches.longitude',
       'branches.address_am',
+      'branches.title_am',
   ];
   public function subcategories() {
       return $this->belongsTo(Subcategory::class,'subcategory_id');
@@ -38,22 +39,49 @@ class Organization extends Model
               $relation = Str::beforeLast($searchable, '.');
               $column = Str::afterLast($searchable, '.');
 
-              $builder->orWhereRelation($relation, $column, 'like', '%'.$searched_word.'%');
-
               if($latitude!=null && $longitude!=null){
 
                 $coordinate=$this->countCordinate($latitude,$longitude);
                 $builder->whereRelation($relation, 'latitude', '<=', $coordinate['latitude']);
                 $builder->whereRelation($relation, 'longitude', '<=', $coordinate['longitude']);
               }
-              // if($address!=null){
-              //   $builder->whereRelation($relation,  $column, 'like', '%'.$searched_word.'%');
-              // }
+
+                if($searched_word!=null){
+                  $words = explode(' ', $searched_word);
+
+                  foreach( $words as $word){
+                    if(!empty($word)){
+
+                      $builder->orWhereRelation($relation, $column, 'like', '%'.$word.'%');
+                    }
+                  }
+
+
+                }
+
+
+
+
 
               continue;
+          }else{
+            if($searched_word!=null){
+              $single_search = explode(' ', $searched_word);
+
+              foreach( $single_search as $item){
+
+                if(!empty($item)){
+
+                  $builder->orWhere($searchable,'like','%'.$item.'%');
+                }
+
+              }
+
+            }
+
           }
 
-          $builder->orWhere($searchable,'like','%'.$searched_word.'%');
+
       }
       // dd($builder->get());
       // dd($builder->toSql());
