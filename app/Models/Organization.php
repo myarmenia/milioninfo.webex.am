@@ -14,12 +14,16 @@ class Organization extends Model
     use HasFactory , CoordinateTrait ;
     protected  $searchable = [
       'name_am',
-      'name_en',
       'name_ru',
+      'name_en',
       'branches.latitude',
       'branches.longitude',
       'branches.address_am',
+      'branches.address_ru',
+      'branches.address_en',
       'branches.title_am',
+      'branches.title_ru',
+      'branches.title_en',
   ];
   public function subcategories() {
       return $this->belongsTo(Subcategory::class,'subcategory_id');
