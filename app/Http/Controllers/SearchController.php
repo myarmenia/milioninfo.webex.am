@@ -29,6 +29,7 @@ class SearchController extends BaseController
 // dd($data->get());
       return $this->sendResponse(NewBranchResource::collection($data->with('organizations')->get()),'success');
       // return $this->sendResponse(OrganizationResource::collection($data->with('subcategories')->get()),'success');
+
       // return SubcategoryResource::collection($data->with('organizations')->get());
 
     }
