@@ -42,12 +42,17 @@ class Organization extends Model
           if(str_contains($searchable,'.')){
               $relation = Str::beforeLast($searchable, '.');
               $column = Str::afterLast($searchable, '.');
+              if($relation=="branches" && ($column=='latitude' || $column=='longitude' )){
 
-              if($latitude!=null && $longitude!=null){
+                if($latitude!=null && $longitude!=null){
+                  $coordinate = $this->countCordinate($latitude,$longitude);
 
-                $coordinate=$this->countCordinate($latitude,$longitude);
-                $builder->whereRelation($relation, 'latitude', '<=', $coordinate['latitude']);
-                $builder->whereRelation($relation, 'longitude', '<=', $coordinate['longitude']);
+                  $builder->whereRelation('branches',function($query) use ($coordinate){
+                    $query->where('latitude', '<=', $coordinate['latitude'])
+                   ->where('longitude', '<=', $coordinate['longitude']);
+                  });
+
+                };
               }
 
                 if($searched_word!=null){
@@ -63,11 +68,6 @@ class Organization extends Model
 
                 }
 
-
-
-
-
-              continue;
           }else{
             if($searched_word!=null){
               $single_search = explode(' ', $searched_word);
