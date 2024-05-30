@@ -1,10 +1,12 @@
 <?php
 
+use App\Http\Controllers\API\CategorySubcategoryController;
 use App\Http\Controllers\API\GetCordinateController;
 use App\Http\Controllers\GetCategoryController;
 use App\Http\Controllers\GetCategorySubcategoriesController;
 use App\Http\Controllers\SearchController;
 use App\Http\Controllers\SearchedAddressController;
+use App\Models\CategorySubcategory;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -28,6 +30,8 @@ Route::group(['middleware' => ['setlang']], function ($router) {
   Route::get('get-categories', GetCategoryController::class);
 
   Route::get('search',SearchController::class);
+
+  Route::post('categories-organizations',CategorySubcategoryController::class);
   Route::get('searched-address',[SearchedAddressController::class,'index']);
 
   Route::get('coordinates',GetCordinateController::class);
