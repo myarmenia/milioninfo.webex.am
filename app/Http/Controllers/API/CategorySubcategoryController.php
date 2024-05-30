@@ -20,6 +20,7 @@ class CategorySubcategoryController extends BaseController
 // $organizations = Organization::whereIn('subcategory_id',$subcategories)->get();
 // $organizations = Organization::whereIn('subcategory_id',$subcategories)->get();
 
-       return OrganizationResource::collection($data);
+      //  return OrganizationResource::collection($data);
+       return $this->sendResponse(OrganizationResource::collection($data),'success');
     }
 }
