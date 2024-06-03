@@ -29,6 +29,12 @@ class Subcategory extends Model
     {
         return $this->belongsToMany(Category::class,'categories_subcategories','subcategory_id', 'category_id');
     }
+    public  function translation(){
+
+      $name='subCategory_'.app()->getLocale();
+      return $this->$name;
+
+  }
 
   public function scopeSearch(Builder $builder,$searced_word=''){
 
@@ -51,6 +57,8 @@ class Subcategory extends Model
       return $builder;
 
   }
- 
+
+
+
 
 }

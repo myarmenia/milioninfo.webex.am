@@ -45,6 +45,13 @@ class Branch extends Model
       return $this->$title;
 
   }
+  public  function working_time(){
+
+    $work_time='work_time_'.app()->getLocale();
+
+    return $this->$work_time;
+
+}
   public function scopeSearch(Builder $builder,$searched_word='', $latitude='', $longitude=''){
 
 
@@ -109,6 +116,17 @@ class Branch extends Model
 
 
 }
+public function nearest_branch($latitude,$longitude){
+
+  $coordinate = $this->countCordinate($latitude,$longitude);
+  // dd(77);
+  return $this->where([
+    ['latitude', '<=', $coordinate['latitude']],
+    ['longitude', '<=', $coordinate['longitude']],
+  ])->get();
+
+}
+
 
 
 }

@@ -102,4 +102,7 @@ class Organization extends Model
     public function images() {
       return $this->hasMany(Image::class);
   }
+  public function nearest_branch_cordinate($latitude,$longitude){
+    dd(4444);
+      }
 }

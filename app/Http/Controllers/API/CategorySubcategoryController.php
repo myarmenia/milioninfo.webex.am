@@ -16,11 +16,7 @@ class CategorySubcategoryController extends BaseController
 
       $category = Category::find($request->category_id);
       $data = $category->subcategories->pluck('organizations')->flatten();
-// $subcategories = $category->subcategories->pluck('id');
-// $organizations = Organization::whereIn('subcategory_id',$subcategories)->get();
-// $organizations = Organization::whereIn('subcategory_id',$subcategories)->get();
 
-      //  return OrganizationResource::collection($data);
        return $this->sendResponse(OrganizationResource::collection($data),'success');
     }
 }
