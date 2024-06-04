@@ -5,6 +5,7 @@ namespace App\Http\Resources;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
 use Carbon\Carbon;
+use Illuminate\Support\Str;
 
 class NearestBranchResource extends JsonResource
 {
@@ -24,7 +25,8 @@ class NearestBranchResource extends JsonResource
         "latitude" =>$this->latitude,
         "longitude"=>$this->longitude,
         "work_time"=>$this->working_time(),
-        "opend_status"=>$this->getWeekDays($this->working_time()),
+        // "opend_status"=>$this->getWeekDays($this->working_time()),
+        "opend_status"=>$this->checkTime($this->work_time_en),
         "title"=>$this->title(),
 
     ];
@@ -34,49 +36,83 @@ class NearestBranchResource extends JsonResource
 
 
     }
-    public function  getWeekDays($working_time)
+
+
+    public function checkTime($string)
     {
-      // dd($working_time);
-        $weekDays = [];
-        $current = Carbon::now()->startOfWeek();
-// dd($current);
-        for ($i = 0; $i < 7; $i++) {
-            $weekDays[] = [
-                'day' => $current->copy()->format('l'),
-                'date' => $current->copy()->toDateString()
-            ];
-            $current->addDay();
+        // dd($string);
+        // Get the current day and time
+        $now = Carbon::now();
+        $day = $now->format('D'); // e.g., Mon, Tue, Wed, etc.
+        $time = $now->format('H:i'); // Current time in HH:MM format
+
+        $allowedDays=explode(' ',$string);
+
+
+        $startTime = '';
+        $endTime = '';
+        $opend_status='';
+        // dd($day, $allowedDays);
+        // dd($day);
+        if (in_array($day, $allowedDays)) {
+            // dd(777);
+            // dd($string);
+          if (Str::contains($string, "-")) {
+            // dd(888);
+            $string_explode=explode('-',$string);
+            // dd($string_explode[0]);
+            $pattern = '/\b([01]?[0-9]|2[0-3]):[0-5][0-9]\b/';
+            preg_match_all($pattern, $string_explode[0], $matches);
+
+            $startTime = $matches[0][0];
+
+            $endTime=$string_explode[1];
+            // dd($time,$startTime,$endTime);
+            // Check if the current time is within the allowed range
+              if ($time >= $startTime && $time <= $endTime) {
+                // // return 'Current time is within the allowed range.';
+                // dd(778);
+
+                if(app()->getLocale()=='am'){
+                  return $opend_status="Բաց է";
+                }
+                elseif(app()->getLocale()=='ru'){
+                  return $opend_status="Открыть";
+                }else{
+                  return $opend_status="Open";
+                }
+
+              }else{
+
+                if(app()->getLocale()=='am'){
+                  return $opend_status="Փակ է";
+                }
+                elseif(app()->getLocale()=='ru'){
+                  return $opend_status="Закрывать";
+                }else{
+                  return $opend_status="Close";
+                }
+
+              }
+
+          }
+          if (Str::contains($string, 24)) {
+
+            if(app()->getLocale()=='am'){
+              return $opend_status="Բաց է";
+            }
+            elseif(app()->getLocale()=='ru'){
+              return $opend_status="Открыть";
+            }else{
+              return $opend_status="Open";
+            }
+
+          }
+
 
         }
-        // dd($weekDays);
-$shortDay = Carbon::now()->format('D');
-// dd($shortDay);
-$pattern = '/^(Mon Tue Wed Thu Fri Sat Sun)+ (\d{2}:\d{2}-\d{2}:\d{2})$/';
-dd($pattern);
-// Use preg_match to find the working hours and days in the string
-if (preg_match($pattern, $text, $matches)) {
-    // $matches[1] contains the days
-    // $matches[2] contains the time range
 
-    $days = $matches[1];
-    $timeRange = $matches[2];
-
-    // Explode the days by space
-    $daysArray = explode(' ', $days);
-
-    // Explode the time range by '-'
-    list($startTime, $endTime) = explode('-', $timeRange);
-
-    return [
-        'days' => $daysArray,
-        'start_time' => $startTime,
-        'end_time' => $endTime,
-    ];
-} else {
-    return null; // Invalid format
-}
-        return response()->json($weekDays);
+        return $opend_status=null;
     }
-
 
 }

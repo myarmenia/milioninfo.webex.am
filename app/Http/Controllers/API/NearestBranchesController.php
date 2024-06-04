@@ -14,13 +14,9 @@ class NearestBranchesController extends BaseController
 
       $category = Category::find($request->category_id);
 
-      //  $data = $category->subcategories->pluck('organizations')->flatten()->paginate(10)->withQueryString();
        $subcategories_id = $category->subcategories->pluck('id');
        $data = Organization::whereIn('subcategory_id',$subcategories_id)->paginate(10)->withQueryString();
 
-
-
-      // return OrganizationsBranchesResource::collection($data);
       return $this->sendResponse(OrganizationsBranchesResource::collection($data),['page_count' => $data->lastPage()],'success');
 
     }
