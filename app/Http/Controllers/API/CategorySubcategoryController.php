@@ -15,15 +15,14 @@ class CategorySubcategoryController extends BaseController
     public function __invoke(Request $request)
     {
 
-      $category = Category::find($request->category_id);
+      // $category = Category::find($request->category_id);
       // $data = $category->subcategories->pluck('organizations')->flatten();
 
       //  return $this->sendResponse(OrganizationResource::collection($data),'success');
       $category = Category::find($request->category_id);
 
       $subcategories_id = $category->subcategories->pluck('id');
-      $data = Organization::whereIn('subcategory_id',$subcategories_id)->paginate(10)->withQueryString();
-
+      $data = Organization::whereIn('subcategory_id',$subcategories_id)->paginate(30)->withQueryString();
      return $this->sendResponse(OrganizationsBranchesResource::collection($data),['page_count' => $data->lastPage()],'success');
     }
 }
