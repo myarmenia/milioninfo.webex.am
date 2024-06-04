@@ -14,6 +14,11 @@ class OrganizationImagesResource extends JsonResource
      */
     public function toArray(Request $request): array
     {
-        return parent::toArray($request);
+
+        return [
+          "id"=>$this->id,
+          "organization_id"=>$this->organization_id,
+          "image_path" =>route('get-file',['path'=>$this->image_path])
+        ];
     }
 }
