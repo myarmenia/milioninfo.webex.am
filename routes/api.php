@@ -1,7 +1,6 @@
 <?php
 
 use App\Http\Controllers\API\CategorySubcategoryController;
-use App\Http\Controllers\API\GetCordinateController;
 use App\Http\Controllers\API\NearestBranchesController;
 use App\Http\Controllers\GetCategoryController;
 use App\Http\Controllers\GetCategorySubcategoriesController;
@@ -30,14 +29,16 @@ Route::group(['middleware' => ['setlang']], function ($router) {
 
   Route::get('get-categories', GetCategoryController::class);
 
-  Route::get('search',SearchController::class);
-// 
+
+//
   Route::post('categories-organizations',CategorySubcategoryController::class);
+
+  Route::get('search',SearchController::class);
   Route::post('nearest-branches',NearestBranchesController::class);
 
   Route::get('searched-address',[SearchedAddressController::class,'index']);
 
-  Route::get('coordinates',GetCordinateController::class);
+
 
 
 });

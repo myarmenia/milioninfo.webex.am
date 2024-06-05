@@ -23,7 +23,7 @@ class NearestBranchResource extends JsonResource
           "id"=>$this->id,
           "organization_id"=>$this->organization_id,
           "address"=>$this->address(),
-          "telephone"=>$this->telephone,
+          "telephone"=>$this->telephone=="null"? null:$this->telephone,
           "latitude" =>$this->latitude,
           "longitude"=>$this->longitude,
           "work_time"=>$this->working_time()=="null" ? null : $this->working_time(),

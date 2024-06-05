@@ -17,10 +17,11 @@ class OrganizationResource extends JsonResource
       return [
         'id'=>$this->id,
         'name'=>$this->translation(),
-        'subcategory_id'=>$this->subcategory_id,
-        'weblinks'=>$this->weblinks,
+        'subcategory'=>$this->subcategories->translation(),
+        'weblinks'=>new WeblinkResource($this->weblinks),
         'branches'=>BranchResource::collection($this->branches ?? null),
         'images'=>OrganizationImagesResource::collection($this->images ?? null),
     ];
+   
     }
 }

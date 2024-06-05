@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Http\Controllers\API\BaseController;
 use App\Http\Resources\NewBranchResource;
 use App\Http\Resources\OrganizationResource;
+use App\Http\Resources\OrganizationsBranchesResource;
 use App\Http\Resources\SubcategoryResource;
 use App\Models\Branch;
 use App\Models\Organization;
@@ -28,8 +29,9 @@ class SearchController extends BaseController
       // $data = Branch::search($searched_word,$latitude, $longitude);
 // dd($data->get());
       // return $this->sendResponse(NewBranchResource::collection($data->with('organizations')->get()),'success');
+// working api
       return $this->sendResponse(OrganizationResource::collection($data->with('subcategories')->get()),'success');
-
+      return $this->sendResponse(OrganizationsBranchesResource::collection($data->with('subcategories')->get()),'success');
       // return SubcategoryResource::collection($data->with('organizations')->get());
 
     }
