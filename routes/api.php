@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\API\CategorySubcategoryController;
 use App\Http\Controllers\API\NearestBranchesController;
+use App\Http\Controllers\API\SubcategoriesOrganizations;
 use App\Http\Controllers\GetCategoryController;
 use App\Http\Controllers\GetCategorySubcategoriesController;
 use App\Http\Controllers\SearchController;
@@ -32,6 +33,7 @@ Route::group(['middleware' => ['setlang']], function ($router) {
 
 //
   Route::post('categories-organizations',CategorySubcategoryController::class);
+  Route::post('subcategories-organizations',SubcategoriesOrganizations::class);
 
   Route::get('search',SearchController::class);
   Route::post('nearest-branches',NearestBranchesController::class);

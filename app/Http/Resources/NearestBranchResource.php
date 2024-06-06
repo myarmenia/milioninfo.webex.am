@@ -41,13 +41,15 @@ class NearestBranchResource extends JsonResource
         // $string="Mon Tue Wed Thu Fri Sat 10:00-18:00";
         // $string="Mon Tue Wed Thu Fri 09:00-19:00Sat 09:00-18:00";
         // $string="Mon Tue Wed Thu Fri Sat Sun 24 hours";
-        $string="Mon Tue Wed Thu Fri Sat Sun 10:30-20:30";
+        // $string="Mon Tue Wed Thu Fri Sat Sun 10:30-20:30";
+        $string="Mon Tue Wed Thu Fri Sat 09:00-20:00Sun 11:00-19:00";
         // dd($string);
         // =============
         // Get the current day and time
         $now = Carbon::now();
         $day = $now->format('D'); // e.g., Mon, Tue, Wed, etc.
         $time = $now->format('H:i'); // Current time in HH:MM format
+        $day="Sun";
 
         $allowedDays = explode(' ', $string);
         // dd( $allowedDays);
@@ -66,7 +68,7 @@ class NearestBranchResource extends JsonResource
               // dd(77);
 
                   if (in_array($day, $allowedDays)) {
-
+                    // dd(88,$allowedDays);
                     if (Str::contains($string, "-")) {
                       // dd(888);
                       $string_explode  =explode('-',$string);
@@ -96,14 +98,19 @@ class NearestBranchResource extends JsonResource
 
                     }
 
+                  }else{
+
+                    // dd(99);
+                    return $this->closed();
                   }
-                  return $this->closed();
+                  // return $this->closed();
+
 
             }
         }
+        // else if(isset($allowedDays[6])){
 
-
-
+        // }
 
     }
 

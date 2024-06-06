@@ -16,13 +16,14 @@ class OrganizationsBranchesResource extends JsonResource
     {
       $latitude = $request->latitude;
       $longitude = $request->longitude;
-// dd($latitude,$longitude);
-    $branches = $this->branches;
+      $branches = $this->branches;
+      
+    // dd($latitude,$longitude);
     if($latitude!=null && $longitude!=null){
 
       $coordinate =countCordinate($latitude,$longitude);
 
-      $p=$this->branches->where('latitude', '<=', $coordinate['latitude'])
+      $branches= $branches->where('latitude', '<=', $coordinate['latitude'])
       ->where('longitude', '<=', $coordinate['longitude']);
     }
 
