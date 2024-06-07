@@ -27,7 +27,7 @@ class NearestBranchResource extends JsonResource
           "latitude" =>$this->latitude,
           "longitude"=>$this->longitude,
           "work_time"=>$this->working_time()=="null" ? null : $this->working_time(),
-          "opend_status"=>$this->checkTime($this->work_time_en,$this->id),
+          "opend_status"=>$this->working_time()=="null" ? null : $this->checkTime($this->work_time_en,$this->id),
           "title"=>$this->title(),
 
       ];
@@ -37,8 +37,9 @@ class NearestBranchResource extends JsonResource
 
     public function checkTime($string,$id)
     {
-      // dd($string);
-        // $string="Mon Tue Wed Thu Fri Sat 10:00-18:00";
+
+
+        $string="Mon Tue Wed Thu Fri Sat 10:00-18:00";
         // $string="Mon Tue Wed Thu Fri 09:00-19:00Sat 09:00-18:00";
         // $string="Mon Tue Wed Thu Fri Sat Sun 24 hours";
         // $string="Mon Tue Wed Thu Fri Sat Sun 10:30-20:30";
@@ -49,7 +50,7 @@ class NearestBranchResource extends JsonResource
         $now = Carbon::now();
         $day = $now->format('D'); // e.g., Mon, Tue, Wed, etc.
         $time = $now->format('H:i'); // Current time in HH:MM format
-        $day="Sun";
+        // $day="Sun";
 
         $allowedDays = explode(' ', $string);
         // dd( $allowedDays);
@@ -98,19 +99,12 @@ class NearestBranchResource extends JsonResource
 
                     }
 
-                  }else{
-
-                    // dd(99);
-                    return $this->closed();
                   }
                   // return $this->closed();
 
 
             }
         }
-        // else if(isset($allowedDays[6])){
-
-        // }
 
     }
 
