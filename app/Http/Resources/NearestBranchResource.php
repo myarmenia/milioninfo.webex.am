@@ -42,7 +42,7 @@ class NearestBranchResource extends JsonResource
         // $string="Mon Tue Wed Thu Fri 09:00-19:00Sat 09:00-18:00";
         // $string="Mon Tue Wed Thu Fri Sat Sun 24 hours";
         // $string="Mon Tue Wed Thu Fri Sat Sun 10:30-20:30";
-        $string="Mon Tue Wed Thu Fri Sat 09:00-20:00Sun 11:00-19:00";
+        // $string="Mon Tue Wed Thu Fri Sat 09:00-20:00Sun 11:00-19:00";
         // dd($string);
         // =============
         // Get the current day and time
