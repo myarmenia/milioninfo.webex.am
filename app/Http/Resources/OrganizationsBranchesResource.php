@@ -17,7 +17,7 @@ class OrganizationsBranchesResource extends JsonResource
       $latitude = $request->latitude;
       $longitude = $request->longitude;
       $branches = $this->branches;
-      
+
     // dd($latitude,$longitude);
     if($latitude!=null && $longitude!=null){
 
@@ -30,6 +30,7 @@ class OrganizationsBranchesResource extends JsonResource
        return [
           'id'=>$this->id,
           'name'=>$this->translation(),
+          'subcategory_id'=>$this->subcategories->id,
           'subcategory'=>$this->subcategories->translation(),
           'weblinks'=>new WeblinkResource($this->weblinks),
           'branches'=>NearestBranchResource::collection($branches ),
