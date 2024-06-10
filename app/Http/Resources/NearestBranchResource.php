@@ -29,169 +29,126 @@ class NearestBranchResource extends JsonResource
           "work_time"=>$this->working_time()=="null" ? null : $this->working_time(),
           "opend_status"=>$this->working_time()=="null" ? null : $this->checkTime($this->work_time_en,$this->id),
           "title"=>$this->title(),
-
       ];
 
     }
 
-
-    public function checkTime($string,$id)
-    {
-
-
-        $string="Mon Tue Wed Thu Fri Sat 10:00-18:00";
-        // $string="Mon Tue Wed Thu Fri 09:00-19:00Sat 09:00-18:00";
-        // $string="Mon Tue Wed Thu Fri Sat Sun 24 hours";
-        // $string="Mon Tue Wed Thu Fri Sat Sun 10:30-20:30";
-        // $string="Mon Tue Wed Thu Fri Sat 09:00-20:00Sun 11:00-19:00";
-        // dd($string);
-        // =============
-        // Get the current day and time
-        $now = Carbon::now();
-        $day = $now->format('D'); // e.g., Mon, Tue, Wed, etc.
-        $time = $now->format('H:i'); // Current time in HH:MM format
-        // $day="Sun";
-
-        $allowedDays = explode(' ', $string);
-        // dd( $allowedDays);
-        $startTime = '';
-        $endTime = '';
-// dd($allowedDays[5]);
-        if(isset($allowedDays[5])){
-          // dd(55);
-          $check_number_in_string = $this->containsNumber($allowedDays[5]);
-
-            if($check_number_in_string==true){
-                // dd(66);
-               return  $this->check_string_with_time($string,$id);
-
-            }else{
-              // dd(77);
-
-                  if (in_array($day, $allowedDays)) {
-                    // dd(88,$allowedDays);
-                    if (Str::contains($string, "-")) {
-                      // dd(888);
-                      $string_explode  =explode('-',$string);
-                      // dd($string_explode);
-                      // dd($string_explode[0]);
-                      $pattern = '/\b([01]?[0-9]|2[0-3]):[0-5][0-9]\b/';
-                      preg_match_all($pattern, $string_explode[0], $matches);
-                      // dd($matches);
-                      $startTime = $matches[0][0];
-
-                      $endTime = $string_explode[1];
-
-                      // Check if the current time is within the allowed range
-                        if ($time >= $startTime && $time <= $endTime) {
-
-                          return $this->opened();
-
-                        }else{
-
-                          return $this->closed();
-                        }
-
-                    }
-                    if (Str::contains($string, 24)) {
-
-                      return $this->opened();
-
-                    }
-
-                  }
-                  // return $this->closed();
+   public function checkTime($string,$id)
+  {
 
 
-            }
-        }
+      // $string="Mon Tue Wed Thu Fri Sat 10:00-18:00";
+      // $string="Mon Tue Wed Thu Fri 09:00-19:00Sat 09:00-18:00";
+      // $string="Mon Tue Wed Thu Fri Sat Sun 24 hours";
+      // $string="Mon Tue Wed Thu Fri Sat Sun 10:30-20:30";
+      // $string="Mon Tue Wed Thu Fri Sat 09:00-20:00Sun 11:00-19:00";
+      // dd($string);
+      // =============
+      // Get the current day and time
 
-    }
+      $now = Carbon::now();
+      $day = $now->format('D'); // e.g., Mon, Tue, Wed, etc.
+      $time = $now->format('H:i'); // Current time in HH:MM format
 
-    function containsNumber($string) {
-      // Regular expression to match any number
-      return preg_match('/\d/', $string) === 1;
+      return $this->get_working_times($string, $now, $day, $time);
+
+
   }
 
-    public function check_string_with_time($string,$id){
-        // dd($string,$id);
-        $now = Carbon::now();
-        $day = $now->format('D'); // e.g., Mon, Tue, Wed, etc.
-        $time = $now->format('H:i'); // Current time in HH:MM format
-        // $opend_status='';
-        // $day="Sun";
+  public function get_working_times($string, $now, $day, $time){
 
-        $allowedDays = ["Mon","Tue", "Wed","Thu","Fri","Sat"];
+        if(Str::contains("$string","24 hours")){
 
-        $string_explode = explode('Sat',$string);
+            return $this->opened();
+        }
 
-        $pattern = '/\b([01]?[0-9]|2[0-3]):[0-5][0-9]\b/';
-        if (in_array($day, $allowedDays)) {
-          if($day!="Sat" ||  $day!="Sun"){
+        preg_match_all('/([A-Za-z]{3})|(\d{2}:\d{2}-\d{2}:\d{2})/', $string, $matches);
 
-            preg_match_all($pattern, $string_explode[0], $matches);
-            // dd($matches);
-            $startTime = $matches[0][0];
-            // dd($matches[0]);
-            $endTime = $matches[0][1];
-            // dd($startTime,$endTime);
+        // Initialize an array to store the results
+        $schedule = [];
+        $current_days = [];
+        // Iterate through the matches to build the schedule
+        foreach ($matches[0] as $match) {
 
-            return $this->check_time_opend_cloced($time,$startTime,$endTime);
+            if (preg_match('/[A-Za-z]{3}/', $match)) {
+                // It's a day
+                $current_days[] = $match;
 
+            } elseif (preg_match('/\d{2}:\d{2}-\d{2}:\d{2}/', $match)) {
+                // It's a time range
 
-          }
-          if($day=="Sat"){
-            // dd($id);
-              // dd($string_explode[1]);
-              $explode_second_part = explode("-",$string_explode[1]);
-              $startTime = $explode_second_part[0];
-              $endTime = $explode_second_part[1];
-              // dd(77);
-              return $this->check_time_opend_cloced($time,$startTime,$endTime);
+                foreach ($current_days as $days) {
+
+                    $schedule[$days] = $match;
+
+                }
+                // Reset current days after adding time range
+                $current_days = [];
+            }
+            // dump($current_days);
+        }
+
+        // Print the schedule
+
+        $current_days_array=[];
+        foreach($schedule as $key=>$item){
+          array_push($current_days_array,$key);
+        }
+
+        if(in_array($day,$current_days_array)){
+
+          foreach($schedule as $key=>$item){
+
+            if($day == $key){
+              $explode_item = explode('-',$item);
+              $startTime = $explode_item[0];
+
+              $endTime = $explode_item[1];
+
+                return $this->check_time_opend_cloced($time,$startTime,$endTime);
+            }
+
           }
         }else{
           return $this->closed();
+
         }
 
-    }
-    public function check_time_opend_cloced($time,$startTime,$endTime){
 
-      if ($time >= $startTime && $time <= $endTime) {
+        }
+        public function check_time_opend_cloced($time,$startTime,$endTime){
 
-        return $this->opened();
+          if ($time >= $startTime && $time <= $endTime) {
 
-      }else{
+            return $this->opened();
 
-        return $this->closed();
-      }
+          }else{
 
-    }
-
-    public function opened(){
-      // dd(77);
-            if(app()->getLocale()=='am'){
-              return "Բաց է";
-            }
-            elseif(app()->getLocale()=='ru'){
-              return "Открыть";
-            }else{
-              return "Open";
-            }
-
-          }
-          public function closed(){
-
-            if(app()->getLocale()=='am'){
-              return "Փակ է";
-            }
-            elseif(app()->getLocale()=='ru'){
-              return "Закрыто";
-            }else{
-              return "Close";
-            }
-
-
+            return $this->closed();
           }
 
+        }
 
-}
+        public function opened(){
+          if(app()->getLocale()=='am'){
+            return "Բաց է";
+          }
+          elseif(app()->getLocale()=='ru'){
+            return "Открыть";
+          }else{
+            return "Open";
+          }
+
+        }
+        public function closed(){
+
+          if(app()->getLocale()=='am'){
+            return "Փակ է";
+          }
+          elseif(app()->getLocale()=='ru'){
+            return "Закрыто";
+          }else{
+            return "Close";
+          }
+        }
+    }
