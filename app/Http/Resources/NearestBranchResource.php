@@ -29,6 +29,7 @@ class NearestBranchResource extends JsonResource
           "work_time"=>$this->working_time()=="null" ? null : $this->working_time(),
           "opend_status"=>$this->working_time()=="null" ? null : $this->checkTime($this->work_time_en,$this->id),
           "title"=>$this->title(),
+
       ];
 
     }
@@ -51,6 +52,9 @@ class NearestBranchResource extends JsonResource
       $time = $now->format('H:i'); // Current time in HH:MM format
 
       return $this->get_working_times($string, $now, $day, $time);
+
+
+
 
 
   }
@@ -91,8 +95,8 @@ class NearestBranchResource extends JsonResource
         // Print the schedule
 
         $current_days_array=[];
-        foreach($schedule as $key=>$item){
-          array_push($current_days_array,$key);
+        foreach($schedule as $key1=>$item1){
+          array_push($current_days_array,$key1);
         }
 
         if(in_array($day,$current_days_array)){
@@ -110,6 +114,7 @@ class NearestBranchResource extends JsonResource
 
           }
         }else{
+
           return $this->closed();
 
         }
