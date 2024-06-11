@@ -18,11 +18,11 @@ class CategorySubcategoryController extends BaseController
       // $category = Category::find($request->category_id);
       // $data = $category->subcategories->pluck('organizations')->flatten();
 
-   
+
       $category = Category::find($request->category_id);
 
       $subcategories_id = $category->subcategories->pluck('id');
       $data = Organization::whereIn('subcategory_id',$subcategories_id)->paginate(30)->withQueryString();
-     return $this->sendResponse(OrganizationsBranchesResource::collection($data),['page_count' => $data->lastPage()],'success');
+     return $this->sendResponse(OrganizationsBranchesResource::collection($data),'success',['page_count' => $data->lastPage()]);
     }
 }

@@ -19,7 +19,7 @@ class OrganizationsBranchResource extends JsonResource
           'id'=>$this->id,
           'name'=>$this->translation(),
           'subcategory_id'=>$this->subcategory_id,
-          'weblinks'=>$this->weblinks,
+          'weblinks'=>new WeblinkResource($this->weblinks=="null" ? null : $this->weblinks),
           'images'=>OrganizationImagesResource::collection($this->images ?? null),
         ];
     }

@@ -33,7 +33,7 @@ class OrganizationsBranchesResource extends JsonResource
           'subcategory_id'=>$this->subcategories->id,
           'subcategory'=>$this->subcategories->translation(),
           'weblinks'=>new WeblinkResource($this->weblinks),
-          'branches'=>NearestBranchResource::collection($branches ),
+          'branches'=>NearestBranchResource::collection($branches),
           'images'=>OrganizationImagesResource::collection($this->images ?? null),
 
       ];

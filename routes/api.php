@@ -36,7 +36,7 @@ Route::group(['middleware' => ['setlang']], function ($router) {
   Route::post('subcategories-organizations',SubcategoriesOrganizations::class);
 
   Route::get('search',SearchController::class);
-  Route::post('nearest-branches',NearestBranchesController::class);
+ 
 
   Route::get('searched-address',[SearchedAddressController::class,'index']);
 

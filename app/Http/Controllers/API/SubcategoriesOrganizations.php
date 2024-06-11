@@ -11,11 +11,11 @@ use Illuminate\Http\Request;
 class SubcategoriesOrganizations extends BaseController
 {
     public function __invoke(Request $request){
-   
+
       $subcategory = Subcategory::find($request->subcategory_id)->first();
       if($subcategory){
         $data = Organization::where('subcategory_id',$request->subcategory_id)->paginate(30)->withQueryString();
-        return $this->sendResponse(OrganizationsBranchesResource::collection($data),['page_count' => $data->lastPage()],'success');
+        return $this->sendResponse(OrganizationsBranchesResource::collection($data),'success',['page_count' => $data->lastPage()]);
       }
 
 
