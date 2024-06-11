@@ -29,7 +29,7 @@ class CategorySubcategoryController extends BaseController
       $category = Category::find($request->category_id);
 
       $subcategories_id = $category->subcategories->pluck('id')->toArray();
-    
+
       // $data = Organization::whereIn('subcategory_id',$subcategories_id)->paginate(30)->withQueryString();
       $organization_ids = Organization::whereIn('subcategory_id',$subcategories_id)->pluck('id');
 
@@ -41,7 +41,7 @@ class CategorySubcategoryController extends BaseController
       }
 
      $data=$data->paginate(30)->withQueryString();
-
+// dd($data);
         // return $this->sendResponse(OrganizationsBranchesResource::collection($data),'success',['page_count' => $data->lastPage()]);
         return $this->sendResponse(BranchWithOrganizationResource::collection($data),'success', ['page_count' => $data->lastPage()]);
     }
