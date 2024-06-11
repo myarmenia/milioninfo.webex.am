@@ -21,8 +21,8 @@ class BranchWithOrganizationResource extends JsonResource
           "organization_id"=>$this->organization_id,
           "address"=>$this->address(),
           "telephone"=>$this->telephone,
-          "latitude" =>$this->latitude,
-          "longitude"=>$this->longitude,
+          "latitude" =>floatval($this->latitude),
+          "longitude"=>floatval($this->longitude),
           "title"=>$this->title(),
           "organization"=> new OrganizationsBranchResource($this->organizations ?? null)
          ];
