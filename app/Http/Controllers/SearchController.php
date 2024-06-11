@@ -29,8 +29,8 @@ class SearchController extends BaseController
       // $data = Subcategory::search($searched_word);
       $data = Branch::search($searched_word,$latitude, $longitude);
 // dd($data->get());
-// 
-      return $this->sendResponse(NewBranchResource::collection($data->with('organizations')->get()),'success');
+//
+      return $this->sendResponse(NewBranchResource::collection($data->with('organizations')->paginate(1)->withQueryString()),'success');
 // working api
       // return $this->sendResponse(OrganizationResource::collection($data->with('subcategories')->get()),'success');
       // return $this->sendResponse(OrganizationsBranchesResource::collection($data->with('subcategories')->get()),'success',);

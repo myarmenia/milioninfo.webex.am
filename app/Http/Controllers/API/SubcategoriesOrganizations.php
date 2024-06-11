@@ -3,20 +3,40 @@
 namespace App\Http\Controllers\API;
 
 use App\Http\Controllers\Controller;
+use App\Http\Requests\CategoriesOrganizationRequest;
+use App\Http\Resources\BranchWithOrganizationResource;
 use App\Http\Resources\OrganizationsBranchesResource;
+use App\Models\Branch;
 use App\Models\Organization;
 use App\Models\Subcategory;
 use Illuminate\Http\Request;
 
 class SubcategoriesOrganizations extends BaseController
 {
-    public function __invoke(Request $request){
+    public function __invoke(CategoriesOrganizationRequest $request){
+
+      $latitude = $request->latitude;
+      $longitude = $request->longitude;
+      $coordinate =countCordinate($latitude,$longitude);
 
       $subcategory = Subcategory::find($request->subcategory_id)->first();
-      if($subcategory){
-        $data = Organization::where('subcategory_id',$request->subcategory_id)->paginate(30)->withQueryString();
-        return $this->sendResponse(OrganizationsBranchesResource::collection($data),'success',['page_count' => $data->lastPage()]);
+      // if($subcategory){
+      //   $data = Organization::where('subcategory_id',$request->subcategory_id)->paginate(30)->withQueryString();
+      //   return $this->sendResponse(OrganizationsBranchesResource::collection($data),'success',['page_count' => $data->lastPage()]);
+      // }
+      $organization_ids = Organization::whereIn('subcategory_id',$subcategory)->pluck('id');
+
+      $data=Branch::whereIn('organization_id',$organization_ids);
+      if($latitude!=null && $longitude!=null){
+
+        $data=$data->where('latitude', '<=', $coordinate['latitude'])
+        ->where('longitude', '<=', $coordinate['longitude']);
       }
+
+        $data=$data->paginate(30)->withQueryString();
+
+
+        return $this->sendResponse(BranchWithOrganizationResource::collection($data),'success', ['page_count' => $data->lastPage()]);
 
 
 
