@@ -33,7 +33,7 @@ class BranchWithOrganizationResource extends JsonResource
           "organization"=> new OrganizationsBranchResource($this->organizations ?? null)
          ];
     }
-    
+
 
 
 
