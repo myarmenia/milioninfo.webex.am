@@ -42,9 +42,9 @@ class CategorySubcategoryController extends BaseController
         ->where('longitude', '<=', $coordinate['longitude']);
       }
 
-     $data=$data->paginate(30)->withQueryString();
-// dd($data);
-        return $this->sendResponse(OrganizationsBranchesResource::collection($data),'success',['page_count' => $data->lastPage()]);
+        $data=$data->paginate(30)->withQueryString();
+
+
         return $this->sendResponse(BranchWithOrganizationResource::collection($data),'success', ['page_count' => $data->lastPage()]);
     }
 }
