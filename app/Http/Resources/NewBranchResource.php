@@ -2,11 +2,13 @@
 
 namespace App\Http\Resources;
 
+use App\Traits\CheckOpendClosedTrait;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
 
 class NewBranchResource extends JsonResource
 {
+  use CheckOpendClosedTrait;
     /**
      * Transform the resource into an array.
      *
@@ -22,7 +24,10 @@ class NewBranchResource extends JsonResource
             "latitude" =>$this->latitude,
             "longitude"=>$this->longitude,
             "title"=>$this->title(),
+            "work_time"=>$this->working_time()=="null" ? null : $this->working_time(),
+            "opend_status"=>$this->working_time()=="null" ? null : $this->checkTime($this->work_time_en,$this->id),
             "organization"=> new OrganizationsBranchResource($this->organizations ?? null)
         ];
     }
+    
 }

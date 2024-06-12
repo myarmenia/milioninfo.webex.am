@@ -13,8 +13,11 @@ use App\Models\Category;
 use App\Models\Organization;
 use Illuminate\Http\Request;
 
+
 class CategorySubcategoryController extends BaseController
 {
+
+
     public function __invoke(CategoriesOrganizationRequest $request)
     {
 
@@ -30,10 +33,9 @@ class CategorySubcategoryController extends BaseController
 
       $subcategories_id = $category->subcategories->pluck('id')->toArray();
 
-      // $data = Organization::whereIn('subcategory_id',$subcategories_id)->paginate(30)->withQueryString();
       $organization_ids = Organization::whereIn('subcategory_id',$subcategories_id)->pluck('id');
 
-      $data=Branch::whereIn('organization_id',$organization_ids);
+      $data = Branch::whereIn('organization_id',$organization_ids);
       if($latitude!=null && $longitude!=null){
 
         $data=$data->where('latitude', '<=', $coordinate['latitude'])
@@ -42,7 +44,7 @@ class CategorySubcategoryController extends BaseController
 
      $data=$data->paginate(30)->withQueryString();
 // dd($data);
-        // return $this->sendResponse(OrganizationsBranchesResource::collection($data),'success',['page_count' => $data->lastPage()]);
+        return $this->sendResponse(OrganizationsBranchesResource::collection($data),'success',['page_count' => $data->lastPage()]);
         return $this->sendResponse(BranchWithOrganizationResource::collection($data),'success', ['page_count' => $data->lastPage()]);
     }
 }

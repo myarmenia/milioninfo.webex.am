@@ -32,7 +32,7 @@ class SearchController extends BaseController
 
 
       return $this->sendResponse(NewBranchResource::collection($data),'success',['page_count' => $data->lastPage()]);
-// working api
+// old api
       // return $this->sendResponse(OrganizationResource::collection($data->with('subcategories')->get()),'success');
       // return $this->sendResponse(OrganizationsBranchesResource::collection($data->with('subcategories')->get()),'success',);
 
