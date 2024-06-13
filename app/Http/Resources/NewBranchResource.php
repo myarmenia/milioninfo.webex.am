@@ -21,13 +21,13 @@ class NewBranchResource extends JsonResource
             "organization_id"=>$this->organization_id,
             "address"=>$this->address(),
             "telephone"=>$this->telephone,
-            "latitude" =>$this->latitude,
-            "longitude"=>$this->longitude,
+            "latitude" =>floatval($this->latitude),
+            "longitude"=>floatval($this->longitude),
             "title"=>$this->title(),
             "work_time"=>$this->working_time()=="null" ? null : $this->working_time(),
             "opend_status"=>$this->working_time()=="null" ? null : $this->checkTime($this->work_time_en,$this->id),
             "organization"=> new OrganizationsBranchResource($this->organizations ?? null)
         ];
     }
-    
+
 }
