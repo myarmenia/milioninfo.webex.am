@@ -48,6 +48,7 @@ class SubcategoriesOrganizations extends BaseController
         )
         ->havingRaw('distance >= ?', [$distance])
         ->orderBy('distance');
+        // dd($data);
     }
 
 
