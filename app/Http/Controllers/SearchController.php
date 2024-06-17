@@ -59,7 +59,6 @@ class SearchController extends BaseController
 
       return $this->sendResponse(NewBranchResource::collection($data),'success',['page_count' => $data->lastPage()]);
 
-
     }
 
 }
