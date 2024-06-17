@@ -35,18 +35,7 @@ class CategorySubcategoryController extends BaseController
 
       $organization_ids = Organization::whereIn('subcategory_id',$subcategories_id)->pluck('id');
 
-      // $data = Branch::whereIn('organization_id',$organization_ids);
-      // if($latitude!=null && $longitude!=null){
-
-      //   $data = $data->where('latitude', '<=', $coordinate['latitude'])
-      //   ->where('longitude', '<=', $coordinate['longitude']);
-      // }
-
-      //   $data = $data->paginate(30)->withQueryString();
-
-
-      //   return $this->sendResponse(BranchWithOrganizationResource::collection($data),'success', ['page_count' => $data->lastPage()]);
-      // $radius = $request->input('radius', 1); // Радиус поиска по умолчанию (10 км)
+     
       $distance = 1.0; // 1.0 kilometer, which equals 1000 meters
       $data = Branch::whereIn('organization_id', $organization_ids);
 

@@ -21,18 +21,11 @@ class SubcategoriesOrganizations extends BaseController
       $coordinate =countCordinate($latitude,$longitude);
 
       $subcategory = Subcategory::find($request->subcategory_id)->first();
-      // if($subcategory){
-      //   $data = Organization::where('subcategory_id',$request->subcategory_id)->paginate(30)->withQueryString();
-      //   return $this->sendResponse(OrganizationsBranchesResource::collection($data),'success',['page_count' => $data->lastPage()]);
-      // }
+
       $organization_ids = Organization::whereIn('subcategory_id',$subcategory)->pluck('id');
       $distance = 1.0; // 1.0 kilometer, which equals 1000 meters
       $data=Branch::whereIn('organization_id',$organization_ids);
-      // if($latitude!=null && $longitude!=null){
-
-      //   $data=$data->where('latitude', '<=', $coordinate['latitude'])
-      //   ->where('longitude', '<=', $coordinate['longitude']);
-      // }
+     
       if ($latitude !== null && $longitude !== null) {
         $data = $data->select(
             'branches.*',

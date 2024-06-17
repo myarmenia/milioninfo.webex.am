@@ -34,65 +34,6 @@ class Organization extends Model
   public function branches() {
       return $this->hasMany(Branch::class);
   }
-  public function scopeSearch(Builder $builder,$searched_word='', $latitude='', $longitude=''){
-
-
-      foreach($this->searchable as $searchable){
-
-          if(str_contains($searchable,'.')){
-              $relation = Str::beforeLast($searchable, '.');
-              $column = Str::afterLast($searchable, '.');
-              if($relation=="branches" && ($column=='latitude' || $column=='longitude' )){
-
-                if($latitude!=null && $longitude!=null){
-                  $coordinate = $this->countCordinate($latitude,$longitude);
-
-                  $builder->whereRelation('branches',function($query) use ($coordinate){
-                    $query->where('latitude', '<=', $coordinate['latitude'])
-                   ->where('longitude', '<=', $coordinate['longitude']);
-                  });
-
-                };
-              }
-
-                if($searched_word!=null){
-                  $words = explode(' ', $searched_word);
-
-                  foreach( $words as $word){
-                    if(!empty($word)){
-
-                      $builder->orWhereRelation($relation, $column, 'like', '%'.$word.'%');
-                    }
-                  }
-
-
-                }
-
-          }else{
-            if($searched_word!=null){
-              $single_search = explode(' ', $searched_word);
-
-              foreach( $single_search as $item){
-
-                if(!empty($item)){
-
-                  $builder->orWhere($searchable,'like','%'.$item.'%');
-                }
-
-              }
-
-            }
-
-          }
-
-
-      }
-      // dd($builder->get());
-      // dd($builder->toSql());
-      return $builder;
-
-
-  }
   public  function translation(){
 
       $name='name_'.app()->getLocale();
