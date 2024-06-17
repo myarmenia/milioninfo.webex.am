@@ -28,27 +28,27 @@ class SubcategoriesOrganizations extends BaseController
       // dd($organization_ids);
       $data=Branch::whereIn('organization_id',$organization_ids);
     //  dd($data->pluck('id'));
-    if($latitude!=null && $longitude!=null){
-          $coordinate = countCordinate($latitude,$longitude);
+    // if($latitude!=null && $longitude!=null){
+    //       $coordinate = countCordinate($latitude,$longitude);
 
-          $data->where([
-            ['latitude', '<=', $coordinate['latitude']],
-            ['longitude', '<=', $coordinate['longitude']],
-          ]);
+    //       $data->where([
+    //         ['latitude', '<=', $coordinate['latitude']],
+    //         ['longitude', '<=', $coordinate['longitude']],
+    //       ]);
 
-        };
-    //   if ($latitude !== null && $longitude !== null) {
-    //     $data = $data->select(
-    //         'branches.*',
-    //         DB::raw("6371 * acos(cos(radians($latitude))
-    //         * cos(radians(latitude))
-    //         * cos(radians(longitude) - radians($longitude ))
-    //         + sin(radians($latitude))
-    //         * sin(radians(latitude))) AS distance")
-    //     )
-    //     ->havingRaw('distance >= ?', [$distance])
-    //     ->orderBy('distance');
-    // }
+    //     };
+      if ($latitude !== null && $longitude !== null) {
+        $data = $data->select(
+            'branches.*',
+            DB::raw("6371 * acos(cos(radians($latitude))
+            * cos(radians(latitude))
+            * cos(radians(longitude) - radians($longitude ))
+            + sin(radians($latitude))
+            * sin(radians(latitude))) AS distance")
+        )
+        ->havingRaw('distance >= ?', [$distance])
+        ->orderBy('distance');
+    }
 
 
         $data=$data->paginate(30)->withQueryString();
