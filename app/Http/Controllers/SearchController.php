@@ -3,7 +3,6 @@
 namespace App\Http\Controllers;
 
 use App\Http\Controllers\API\BaseController;
-use App\Http\Requests\SearchRequest;
 use App\Http\Resources\NewBranchResource;
 use App\Http\Resources\OrganizationResource;
 use App\Http\Resources\OrganizationsBranchesResource;
@@ -20,15 +19,27 @@ class SearchController extends BaseController
     /**
      * Handle the incoming request.
      */
-    public function __invoke(SearchRequest $request)
+    public function __invoke(Request $request)
     {
       $searched_word = $request->query('searched_word');
       $latitude = $request->query('latitude');
       $longitude = $request->query('longitude');
 
 
+
       $distance = 1.0;
       $data = Branch::search($searched_word,$latitude, $longitude);
+
+
+
+        // if($latitude!=null && $longitude!=null){
+        //   $coordinate = $this->countCordinate($latitude,$longitude);
+        //   $data->where([
+        //     ['latitude', '<=', $coordinate['latitude']],
+        //     ['longitude', '<=', $coordinate['longitude']],
+        //   ]);
+
+        // };
 
       if ($latitude !== null && $longitude !== null) {
         $data = $data->select(
