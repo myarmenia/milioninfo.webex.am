@@ -23,21 +23,23 @@ class CategorySubcategoryController extends BaseController
 
       $latitude = $request->latitude;
       $longitude = $request->longitude;
-      $coordinate =countCordinate($latitude,$longitude);
+      // $coordinate =countCordinate($latitude,$longitude);
 
       // $category = Category::find($request->category_id);
       // $data = $category->subcategories->pluck('organizations')->flatten();
-
-
-      $category = Category::find($request->category_id);
-
-      $subcategories_id = $category->subcategories->pluck('id')->toArray();
-
-      $organization_ids = Organization::whereIn('subcategory_id',$subcategories_id)->pluck('id');
-
-     
       $distance = 1.0; // 1.0 kilometer, which equals 1000 meters
-      $data = Branch::whereIn('organization_id', $organization_ids);
+      if($request->category_id!=null){
+
+        $category = Category::find($request->category_id);
+        $subcategories_id = $category->subcategories->pluck('id')->toArray();
+        $organization_ids = Organization::whereIn('subcategory_id',$subcategories_id)->pluck('id');
+        $data = Branch::whereIn('organization_id', $organization_ids);
+    }else{
+
+      $data = Branch::where('id','>',0);
+
+    }
+
 
         if ($latitude !== null && $longitude !== null) {
             $data = $data->select(

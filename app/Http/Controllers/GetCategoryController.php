@@ -21,8 +21,8 @@ class GetCategoryController extends BaseController
     public function __invoke(Request $request)
     {
 
-      $categoory = $this->model->getCategory();
+      $category = $this->model->getCategory();
 
-      return $this->sendResponse(CategoryResource::collection($categoory),'success');
+      return $this->sendResponse(CategoryResource::collection($category),'success');
     }
 }

@@ -18,46 +18,39 @@ class SubcategoriesOrganizations extends BaseController
 
       $latitude = $request->latitude;
       $longitude = $request->longitude;
-      $coordinate =countCordinate($latitude,$longitude);
-
-      $subcategory = Subcategory::find($request->subcategory_id);
-      if($subcategory!=null){
-      $organization_ids = Organization::where('subcategory_id',$subcategory->id)->pluck('id');
-
+      // $coordinate =countCordinate($latitude,$longitude);
       $distance = 1.0; // 1.0 kilometer, which equals 1000 meters
-      // dd($organization_ids);
-      $data=Branch::whereIn('organization_id',$organization_ids);
-    //  dd($data->pluck('id'));
-    // if($latitude!=null && $longitude!=null){
-    //       $coordinate = countCordinate($latitude,$longitude);
+      if($request->subcategory_id!=null){
 
-    //       $data->where([
-    //         ['latitude', '<=', $coordinate['latitude']],
-    //         ['longitude', '<=', $coordinate['longitude']],
-    //       ]);
+        $subcategory = Subcategory::find($request->subcategory_id);
+        if($subcategory!=null){
+          $organization_ids = Organization::where('subcategory_id',$subcategory->id)->pluck('id');
+          $data = Branch::whereIn('organization_id',$organization_ids);
+        }else{
+          return $this->sendError("There is no subcategory",'success');
+        }
 
-    //     };
-      if ($latitude !== null && $longitude !== null) {
-        $data = $data->select(
-            'branches.*',
-            DB::raw("6371 * acos(cos(radians($latitude))
-            * cos(radians(latitude))
-            * cos(radians(longitude) - radians($longitude ))
-            + sin(radians($latitude))
-            * sin(radians(latitude))) AS distance")
-        )
-        ->havingRaw('distance >= ?', [$distance])
-        ->orderBy('distance');
-        // dd($data);
-    }
+      }else{
 
-
-        $data=$data->paginate(30)->withQueryString();
-
-
-        return $this->sendResponse(BranchWithOrganizationResource::collection($data),'success', ['page_count' => $data->lastPage()]);
-
+        $data = Branch::where('id','>',0);
       }
+            if ($latitude !== null && $longitude !== null) {
+              $data = $data->select(
+                  'branches.*',
+                  DB::raw("6371 * acos(cos(radians($latitude))
+                  * cos(radians(latitude))
+                  * cos(radians(longitude) - radians($longitude ))
+                  + sin(radians($latitude))
+                  * sin(radians(latitude))) AS distance")
+              )
+              ->havingRaw('distance >= ?', [$distance])
+              ->orderBy('distance');
+
+            }
+
+
+        $data = $data->paginate(30)->withQueryString();
+        return $this->sendResponse(BranchWithOrganizationResource::collection($data),'success', ['page_count' => $data->lastPage()]);
 
     }
 }
