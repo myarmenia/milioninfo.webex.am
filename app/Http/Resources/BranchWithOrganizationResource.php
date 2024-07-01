@@ -24,12 +24,12 @@ class BranchWithOrganizationResource extends JsonResource
           "id"=>$this->id,
           "organization_id"=>$this->organization_id,
           "address"=>$this->address(),
-          "telephone"=>$this->telephone == "null" ? null :$this->telephone,
+          "telephone"=>$this->telephone =="null" ? null :$this->telephone,
           "latitude" =>floatval($this->latitude),
           "longitude"=>floatval($this->longitude),
           "work_time"=>$this->working_time()=="null" ? null : $this->working_time(),
           "opend_status"=>$this->working_time()=="null" ? null : $this->checkTime($this->work_time_en,$this->id),
-          "title"=>$this->title(),
+          "title"=>$this->title()=="null" ? null : $this->title(),
           "organization"=> new OrganizationsBranchResource($this->organizations ?? null)
          ];
     }
