@@ -23,7 +23,7 @@ class NewBranchResource extends JsonResource
             "telephone"=>$this->telephone,
             "latitude" =>floatval($this->latitude),
             "longitude"=>floatval($this->longitude),
-            "title"=>$this->title(),
+            "title"=>$this->title()=="null" ? null : $this->title(),
             "work_time"=>$this->working_time()=="null" ? null : $this->working_time(),
             "opend_status"=>$this->working_time()=="null" ? null : $this->checkTime($this->work_time_en,$this->id),
             "organization"=> new OrganizationsBranchResource($this->organizations ?? null)
