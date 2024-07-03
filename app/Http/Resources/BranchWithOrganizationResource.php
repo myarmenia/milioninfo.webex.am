@@ -2,6 +2,7 @@
 
 namespace App\Http\Resources;
 
+use App\Models\CategorySubcategory;
 use App\Traits\CheckOpendClosedTrait;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
@@ -18,7 +19,8 @@ class BranchWithOrganizationResource extends JsonResource
      */
     public function toArray(Request $request): array
     {
-
+      
+// dd($this->organizations->subcategories->categories);
          return [
 
           "id"=>$this->id,
