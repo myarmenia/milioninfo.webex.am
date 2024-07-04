@@ -19,8 +19,8 @@ class NewBranchResource extends JsonResource
           return [
             "id"=>$this->id,
             "organization_id"=>$this->organization_id,
-            "address"=>$this->address(),
-            "telephone"=>$this->telephone,
+            "address"=>$this->address() =="null" ? null : $this->address(),
+            "telephone"=>$this->telephone =="null" ? null : $this->telephone,
             "latitude" =>floatval($this->latitude),
             "longitude"=>floatval($this->longitude),
             "title"=>$this->title()=="null" ? null : $this->title(),
