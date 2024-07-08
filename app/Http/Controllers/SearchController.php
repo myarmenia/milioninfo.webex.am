@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Http\Controllers\API\BaseController;
+use App\Http\Requests\CategoriesOrganizationRequest;
 use App\Http\Resources\NewBranchResource;
 use App\Http\Resources\OrganizationResource;
 use App\Http\Resources\OrganizationsBranchesResource;
@@ -19,7 +20,7 @@ class SearchController extends BaseController
     /**
      * Handle the incoming request.
      */
-    public function __invoke(Request $request)
+    public function __invoke(CategoriesOrganizationRequest $request)
     {
       $searched_word = $request->query('searched_word');
       $latitude = $request->query('latitude');
@@ -40,8 +41,9 @@ class SearchController extends BaseController
         //   ]);
 
         // };
-
+dd($data->where('id',13755)->get());
       if ($latitude !== null && $longitude !== null) {
+
         $data = $data->select(
             'branches.*',
             DB::raw("6371 * acos(cos(radians($latitude))
