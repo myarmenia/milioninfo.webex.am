@@ -30,18 +30,11 @@ class SearchController extends BaseController
 
       $distance = 1.0;
       $data = Branch::search($searched_word,$latitude, $longitude);
+      // $data = Branch::search($searched_word);
 
 
 
-        // if($latitude!=null && $longitude!=null){
-        //   $coordinate = $this->countCordinate($latitude,$longitude);
-        //   $data->where([
-        //     ['latitude', '<=', $coordinate['latitude']],
-        //     ['longitude', '<=', $coordinate['longitude']],
-        //   ]);
 
-        // };
-dd($data->where('id',13755)->get());
       if ($latitude !== null && $longitude !== null) {
 
         $data = $data->select(

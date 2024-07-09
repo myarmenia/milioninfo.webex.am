@@ -159,6 +159,7 @@ return [
   'providers' => ServiceProvider::defaultProviders()->merge([
     /*
          * Package Service Providers...
+
          */
 
     /*
@@ -170,6 +171,9 @@ return [
     App\Providers\EventServiceProvider::class,
     App\Providers\RouteServiceProvider::class,
     App\Providers\MenuServiceProvider::class,
+    TeamTNT\Scout\TNTSearchScoutServiceProvider::class,
+    Laravel\Scout\ScoutServiceProvider::class,
+
   ])->toArray(),
 
   /*

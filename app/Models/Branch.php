@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use Laravel\Scout\Searchable;
 use App\Traits\CoordinateTrait;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
@@ -11,6 +12,7 @@ use Illuminate\Support\Str;
 class Branch extends Model
 {
     use HasFactory, CoordinateTrait;
+    // , Searchable
 
     protected  $searchable = [
       'organizations.name_am',
@@ -102,16 +104,24 @@ class Branch extends Model
     }
 
 }
-public function nearest_branch($latitude,$longitude){
 
-  $coordinate = $this->countCordinate($latitude,$longitude);
-  // dd(77);
-  return $this->where([
-    ['latitude', '<=', $coordinate['latitude']],
-    ['longitude', '<=', $coordinate['longitude']],
-  ])->get();
 
-}
+
+    public function toSearchableArray()
+    {
+
+        $array = [
+            'id' => $this->id,
+            'address_am' => $this->address_am,
+            'address_en' => $this->address_en,
+            'address_ru' => $this->address_ru,
+            'title_am' => $this->title_am,
+            'title_en' => $this->title_en,
+            'title_ru' => $this->title_ru,
+        ];
+
+        return $array;
+    }
 
 
 
