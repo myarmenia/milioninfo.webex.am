@@ -6,10 +6,11 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Support\Str;
+use Laravel\Scout\Searchable;
 
 class Subcategory extends Model
 {
-    use HasFactory;
+    use HasFactory,  Searchable;
 
 
     protected  $searchable = [
@@ -56,6 +57,11 @@ class Subcategory extends Model
       // dd($builder->toSql());
       return $builder;
 
+  }
+  public function toSearchableArray()
+  {
+      $array = $this->toArray();
+      return $array;
   }
 
 

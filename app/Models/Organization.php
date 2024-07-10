@@ -8,10 +8,11 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Str;
+use Laravel\Scout\Searchable;
 
 class Organization extends Model
 {
-    use HasFactory , CoordinateTrait ;
+    use HasFactory , CoordinateTrait, Searchable;
     protected  $searchable = [
       'name_am',
       'name_ru',
@@ -43,7 +44,9 @@ class Organization extends Model
     public function images() {
       return $this->hasMany(Image::class);
   }
-  public function nearest_branch_cordinate($latitude,$longitude){
-    dd(4444);
-      }
+  public function toSearchableArray()
+  {
+      $array = $this->toArray();
+      return $array;
+  }
 }

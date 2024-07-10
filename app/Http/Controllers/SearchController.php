@@ -20,7 +20,7 @@ class SearchController extends BaseController
     /**
      * Handle the incoming request.
      */
-    public function __invoke(CategoriesOrganizationRequest $request)
+    public function __invoke(Request $request)
     {
       $searched_word = $request->query('searched_word');
       $latitude = $request->query('latitude');
@@ -32,25 +32,28 @@ class SearchController extends BaseController
       $distance = 0;
       // $data = Branch::search($searched_word,$latitude, $longitude);
       // $data = Branch::search($searched_word);
-      $searchResults = Branch::search($searched_word)->get();
+      $branchResults = Branch::search($searched_word)->get();
+      $organizationResults = Organization::search($searched_word)->get();
+      $subcategoryResults = Subcategory::search($searched_word)->get();
+      $allResults = $branchResults->merge($organizationResults)->merge($subcategoryResults);
 
-      $ids = $searchResults->pluck('id');
+      $ids = $allResults->pluck('id');
       $data = Branch::whereIn('id', $ids);
 
 // dd($data);
-      if ($latitude !== null && $longitude !== null) {
+    //   if ($latitude !== null && $longitude !== null) {
 
-        $data = $data->select(
-            'branches.*',
-            DB::raw("6371 * acos(cos(radians($latitude))
-            * cos(radians(latitude))
-            * cos(radians(longitude) - radians($longitude ))
-            + sin(radians($latitude))
-            * sin(radians(latitude))) AS distance")
-        )
-        ->havingRaw('distance >= ?', [$distance])
-        ->orderBy('distance');
-    }
+    //     $data = $data->select(
+    //         'branches.*',
+    //         DB::raw("6371 * acos(cos(radians($latitude))
+    //         * cos(radians(latitude))
+    //         * cos(radians(longitude) - radians($longitude ))
+    //         + sin(radians($latitude))
+    //         * sin(radians(latitude))) AS distance")
+    //     )
+    //     ->havingRaw('distance >= ?', [$distance])
+    //     ->orderBy('distance');
+    // }
 
       $data=$data->paginate(30)->withQueryString();
 

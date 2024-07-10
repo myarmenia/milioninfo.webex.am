@@ -120,8 +120,12 @@ class Branch extends Model
         //     'title_ru' => $this->title_ru,
         // ];
         $array = $this->toArray();
-        $array['organizations'] = $this->organizations;
-        $array['subcategories'] = $this->organizations->subcategories;
+        $array['organizations'] = $this->organizations->name_am;
+        $array['organizations'] = $this->organizations->name_en;
+        $array['organizations'] = $this->organizations->name_ru;
+        $array['subcategories'] = $this->organizations->subcategories->address_am;
+        $array['subcategories'] = $this->organizations->subcategories->address_en;
+        $array['subcategories'] = $this->organizations->subcategories->address_ru;
 
 
         return $array;
