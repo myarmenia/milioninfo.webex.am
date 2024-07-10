@@ -47,7 +47,7 @@ class SearchController extends BaseController
             + sin(radians($latitude))
             * sin(radians(latitude))) AS distance")
         )
-        ->havingRaw('distance >= ?', [$distance])
+        ->havingRaw('distance <= ?', [$distance])
         ->orderBy('distance');
     }
 
