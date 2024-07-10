@@ -28,7 +28,7 @@ class SearchController extends BaseController
 
 
 
-      $distance = 1.0;
+      // $distance = 1.0;
       $distance = 0;
       // $data = Branch::search($searched_word,$latitude, $longitude);
       // $data = Branch::search($searched_word);
@@ -48,7 +48,7 @@ class SearchController extends BaseController
             + sin(radians($latitude))
             * sin(radians(latitude))) AS distance")
         )
-        ->havingRaw('distance <= ?', [$distance])
+        ->havingRaw('distance >= ?', [$distance])
         ->orderBy('distance');
     }
 
