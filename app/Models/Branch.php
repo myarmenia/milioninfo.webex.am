@@ -121,7 +121,8 @@ class Branch extends Model
         // ];
         $array = $this->toArray();
         $array['organizations'] = $this->organizations;
-     
+        $array['subcategories'] = $this->organizations->subcategories;
+
 
         return $array;
     }
