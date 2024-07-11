@@ -16,18 +16,31 @@ class NewBranchResource extends JsonResource
      */
     public function toArray(Request $request): array
     {
-          return [
-            "id"=>$this->id,
-            "organization_id"=>$this->organization_id,
-            "address"=>$this->address() =="null" ? null : $this->address(),
-            "telephone"=>$this->telephone =="null" ? null : $this->telephone,
-            "latitude" =>floatval($this->latitude),
-            "longitude"=>floatval($this->longitude),
-            "title"=>$this->title()=="null" ? null : $this->title(),
-            "work_time"=>$this->working_time()=="null" ? null : $this->working_time(),
-            "opend_status"=>$this->working_time()=="null" ? null : $this->checkTime($this->work_time_en,$this->id),
-            "organization"=> new OrganizationsBranchResource($this->organizations ?? null)
-        ];
+
+        //   return [
+        //     "id"=>$this->id,
+        //     "organization_id"=>$this->organization_id,
+        //     "address"=>$this->address() =="null" ? null : $this->address(),
+        //     "telephone"=>$this->telephone =="null" ? null : $this->telephone,
+        //     "latitude" =>floatval($this->latitude),
+        //     "longitude"=>floatval($this->longitude),
+        //     "title"=>$this->title()=="null" ? null : $this->title(),
+        //     "work_time"=>$this->working_time()=="null" ? null : $this->working_time(),
+        //     "opend_status"=>$this->working_time()=="null" ? null : $this->checkTime($this->work_time_en,$this->id),
+        //     "organization"=> new OrganizationsBranchResource($this->organizations ?? null)
+        // ];
+        return [
+          "id"=>$this['id'],
+          "organization_id"=>$this['organization_id'],
+          // "address"=>$this->address() =="null" ? null : $this->address(),
+          "telephone"=>$this['telephone'] =="null" ? null : $this['telephone'],
+          "latitude" =>floatval($this['latitude']),
+          "longitude"=>floatval($this['longitude']),
+          // "title"=>$this->title()=="null" ? null : $this->title(),
+          // "work_time"=>$this->working_time()=="null" ? null : $this->working_time(),
+          // "opend_status"=>$this->working_time()=="null" ? null : $this->checkTime($this->work_time_en,$this->id),
+          // "organization"=> new OrganizationsBranchResource($this->organizations ?? null)
+      ];
     }
 
 }

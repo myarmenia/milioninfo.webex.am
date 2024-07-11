@@ -46,7 +46,17 @@ class Organization extends Model
   }
   public function toSearchableArray()
   {
-      $array = $this->toArray();
-      return $array;
+    $array = $this->toArray();
+
+    return [
+            'id' => $array['id'],
+            'name_am' => $array['name_am'],
+            'name_en' => $array['name_en'],
+            'name_ru' => $array['name_ru'],
+            'subcategory_id'=>$array['subcategory_id'],
+        ];
+
+
+      // return $array;
   }
 }
