@@ -11,15 +11,18 @@ use Illuminate\Support\Str;
 
 class Branch extends Model
 {
-    use HasFactory, CoordinateTrait, Searchable;
+    use HasFactory, CoordinateTrait;
+    //  Searchable
+
 
 
     protected  $searchable = [
+      // 'organizations.subcategories.subCategory_am',
+      // 'organizations.subcategories.subCategory_en',
+      // 'organizations.subcategories.subCategory_ru',
       'organizations.name_am',
       'organizations.name_ru',
       'organizations.name_en',
-      // 'latitude',
-      // 'longitude',
       'address_am',
       'address_ru',
       'address_en',
@@ -54,56 +57,56 @@ class Branch extends Model
     return $this->$work_time;
 
 }
-//   public function scopeSearch(Builder $builder,$searched_word='', $latitude='', $longitude=''){
+  public function scopeSearch(Builder $builder,$searched_word=''){
 
 
-//      foreach($this->searchable as $searchable){
+     foreach($this->searchable as $searchable){
 
-//         if(str_contains($searchable,'.')){
+        if(str_contains($searchable,'.')){
 
-//             $relation = Str::beforeLast($searchable, '.');
-//             $column = Str::afterLast($searchable, '.');
-
-
-
-//               if($searched_word!=null){
-
-//                 $words = explode(' ', $searched_word);
-
-//                 foreach( $words as $word){
-
-//                   if(!empty($word)){
-
-//                     $builder->orWhereRelation($relation, $column, 'like', '%'.$word.'%');
-//                   }
-//                 }
-//                 // dd($builder->get());
-//               }
-
-//         }else{
+            $relation = Str::beforeLast($searchable, '.');
+            $column = Str::afterLast($searchable, '.');
 
 
-//           if($searched_word!=null){
-//             $single_search = explode(' ', $searched_word);
 
-//             foreach( $single_search as $item){
-//               if($searchable!='latitude' || $searchable!='longitude' ){
-//                 if(!empty($item)){
+              if($searched_word!=null){
 
-//                   $builder->orWhere($searchable,'like','%'.$item.'%');
-//                 }
-//               }
+                $words = explode(' ', $searched_word);
 
-//             }
+                foreach( $words as $word){
 
-//           }
+                  if(!empty($word)){
 
-//         }
+                    $builder->orWhereRelation($relation, $column, 'like', '%'.$word.'%');
+                  }
+                }
+                // dd($builder->get());
+              }
+
+        }else{
 
 
-//     }
+          if($searched_word!=null){
+            $single_search = explode(' ', $searched_word);
 
-// }
+            foreach( $single_search as $item){
+              if($searchable!='latitude' || $searchable!='longitude' ){
+                if(!empty($item)){
+
+                  $builder->orWhere($searchable,'like','%'.$item.'%');
+                }
+              }
+
+            }
+
+          }
+
+        }
+
+
+    }
+
+}
 
 
 
